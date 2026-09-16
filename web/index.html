@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bancada de Algoritmos — Entregável 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E7ECF2;
+  --panel:#FFFFFF;
+  --ink:#16243A;
+  --ink-soft:#5A6980;
+  --line:#C9D3DF;
+  --accent:#2540C8;
+  --accent-ink:#FFFFFF;
+  --result:#0B6E63;
+  --result-bg:#E3F2EF;
+  --warn:#9A3412;
+  --warn-bg:#FBEBE2;
+  --sans:"IBM Plex Sans",-apple-system,Segoe UI,Roboto,sans-serif;
+  --display:"Archivo",var(--sans);
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111A27;--panel:#18222F;--ink:#E6ECF4;--ink-soft:#93A2B8;--line:#2C3A4C;
+    --accent:#6E8CFF;--accent-ink:#0E1622;--result:#5FD8C4;--result-bg:#15302E;
+    --warn:#F0A78A;--warn-bg:#33201A;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111A27;--panel:#18222F;--ink:#E6ECF4;--ink-soft:#93A2B8;--line:#2C3A4C;
+  --accent:#6E8CFF;--accent-ink:#0E1622;--result:#5FD8C4;--result-bg:#15302E;
+  --warn:#F0A78A;--warn-bg:#33201A;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.55;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:28px 28px;background-position:-1px -1px;
+}
+body::before{content:"";position:fixed;inset:0;background:var(--paper);opacity:.72;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:28px 20px 64px}
+header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:26px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,44px);letter-spacing:-.02em;margin:0;max-width:22ch}
+.sub{margin:6px 0 0;color:var(--ink-soft);max-width:60ch}
+button.theme{
+  font:500 14px/1 var(--sans);background:var(--panel);color:var(--ink);
+  border:1px solid var(--line);border-radius:999px;padding:9px 16px;cursor:pointer;
+}
+.layout{display:grid;grid-template-columns:238px 1fr;gap:22px;align-items:start}
+nav{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px;position:sticky;top:20px}
+nav ol{list-style:none;margin:0;padding:0;counter-reset:alg}
+nav button{
+  counter-increment:alg;display:flex;gap:10px;width:100%;text-align:left;
+  font:500 15px/1.35 var(--sans);color:var(--ink);background:none;border:0;
+  padding:10px 11px;border-radius:7px;cursor:pointer;
+}
+nav button::before{content:counter(alg);font-family:var(--mono);font-size:13px;color:var(--ink-soft);padding-top:1px}
+nav button:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+nav button[aria-current="true"]{background:var(--accent);color:var(--accent-ink)}
+nav button[aria-current="true"]::before{color:var(--accent-ink);opacity:.7}
+main{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:26px}
+h2{font-family:var(--display);font-weight:600;font-size:26px;letter-spacing:-.01em;margin:0}
+.spec{font-family:var(--mono);font-size:13.5px;color:var(--ink-soft);margin:8px 0 22px;padding-left:12px;border-left:2px solid var(--line)}
+form{display:grid;gap:16px;margin:0}
+label{display:block;font-weight:500;margin-bottom:6px}
+.hint{font-weight:400;color:var(--ink-soft);font-size:14px}
+input[type=text],input[type=number]{
+  width:100%;font:400 16px/1.4 var(--mono);color:var(--ink);background:var(--paper);
+  border:1px solid var(--line);border-radius:7px;padding:11px 12px;
+}
+input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.run{
+  justify-self:start;font:600 15px/1 var(--sans);background:var(--accent);color:var(--accent-ink);
+  border:0;border-radius:7px;padding:13px 24px;cursor:pointer;
+}
+.out{margin-top:24px;border-top:1px solid var(--line);padding-top:20px}
+.empty{color:var(--ink-soft)}
+.answer{background:var(--result-bg);color:var(--result);border-radius:8px;padding:16px 18px;font-family:var(--mono);font-size:17px;font-weight:500;word-break:break-word}
+.answer.bad{background:var(--warn-bg);color:var(--warn)}
+.detail{margin-top:14px;font-family:var(--mono);font-size:13.5px;color:var(--ink-soft);white-space:pre-wrap;word-break:break-word}
+.seq{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.seq span{font-family:var(--mono);font-size:13px;border:1px solid var(--line);border-radius:5px;padding:4px 8px}
+footer{margin-top:28px;color:var(--ink-soft);font-size:14px}
+@media (max-width:760px){
+  .layout{grid-template-columns:1fr}
+  nav{position:static}
+  nav ol{display:flex;gap:6px;overflow-x:auto}
+  nav button{white-space:nowrap}
+  main{padding:20px 16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Bancada de algoritmos</h1>
+      <p class="sub">Os seis algoritmos do Entregável 2 rodando direto no navegador, com a mesma lógica das versões em Java e JavaScript.</p>
+    </div>
+    <button class="theme" id="theme" type="button">Tema escuro</button>
+  </header>
+
+  <div class="layout">
+    <nav aria-label="Algoritmos"><ol id="menu"></ol></nav>
+    <main>
+      <h2 id="title"></h2>
+      <p class="spec" id="spec"></p>
+      <form id="form" autocomplete="off"></form>
+      <section class="out" aria-live="polite">
+        <div id="out"><p class="empty">Preencha os campos e execute para ver o resultado.</p></div>
+      </section>
+    </main>
+  </div>
+
+  <footer>Entregável 2 — algoritmos fundamentais. Nenhum dado sai do seu navegador.</footer>
+</div>
+
+<script>
+const parseLista = (txt) => String(txt).split(",").map(p=>parseFloat(p.trim())).filter(v=>!Number.isNaN(v));
+const fmt = (a) => "[" + a.join(", ") + "]";
+
+const ALGORITMOS = [
+  {
+    id:"primo", nome:"Número primo",
+    spec:"entrada: n ∈ ℤ⁺ · testa divisores de 2 até n-1",
+    campos:[{name:"n",label:"Número inteiro positivo",type:"number",value:"97",hint:"Ex.: 97"}],
+    run({n}){
+      const numero = parseInt(n);
+      if (Number.isNaN(numero)) return {bad:true, texto:"Digite um número inteiro válido."};
+      let ehPrimo = true, divisor = null;
+      if (numero <= 1) ehPrimo = false;
+      for (let i=2;i<numero;i++){ if (numero % i === 0){ ehPrimo=false; divisor=i; break; } }
+      return {
+        texto: ehPrimo ? `${numero} é um número primo!` : `${numero} não é um número primo.`,
+        bad: !ehPrimo,
+        detalhe: numero <= 1 ? "Números menores ou iguais a 1 não são primos por definição."
+               : divisor !== null ? `Primeiro divisor encontrado: ${divisor} (${numero} = ${divisor} × ${numero/divisor}).`
+               : `Nenhum divisor entre 2 e ${numero-1}.`
+      };
+    }
+  },
+  {
+    id:"somatorio", nome:"Somatório",
+    spec:"entrada: lista de reais · saída: Σ xᵢ",
+    campos:[{name:"lista",label:"Números separados por vírgula",type:"text",value:"1, 2, 3.5, 4",hint:"Ex.: 1, 2, 3.5, 4"}],
+    run({lista}){
+      const numeros = parseLista(lista);
+      if (!numeros.length) return {bad:true, texto:"Nenhum número foi inserido."};
+      const resultado = numeros.reduce((a,b)=>a+b,0);
+      return {
+        texto:`O somatório de ${fmt(numeros)} é: ${resultado}`,
+        detalhe:`${numeros.length} termo(s) · média ${resultado/numeros.length}`
+      };
+    }
+  },
+  {
+    id:"fibonacci", nome:"Fibonacci",
+    spec:"F₀ = 0, F₁ = 1, Fₙ = Fₙ₋₁ + Fₙ₋₂ · iterativo",
+    campos:[{name:"n",label:"Quantidade de termos",type:"number",value:"12",hint:"Inteiro maior que 0"}],
+    run({n}){
+      const q = parseInt(n);
+      if (Number.isNaN(q) || q <= 0) return {bad:true, texto:"Digite um número inteiro maior que 0."};
+      if (q > 300) return {bad:true, texto:"Use até 300 termos para manter a leitura utilizável."};
+      const resultado=[]; let anterior=0, atual=1;
+      for (let i=0;i<q;i++){ resultado.push(anterior); const prox=anterior+atual; anterior=atual; atual=prox; }
+      return { texto:`Os primeiros ${q} termos da sequência:`, sequencia:resultado };
+    }
+  },
+  {
+    id:"mdc", nome:"MDC",
+    spec:"algoritmo de Euclides por restos sucessivos",
+    campos:[
+      {name:"a",label:"Primeiro número (a)",type:"number",value:"48"},
+      {name:"b",label:"Segundo número (b)",type:"number",value:"180"}
+    ],
+    run({a,b}){
+      const oa = parseInt(a), ob = parseInt(b);
+      if (Number.isNaN(oa) || Number.isNaN(ob)) return {bad:true, texto:"Digite números inteiros válidos."};
+      let x = Math.abs(oa), y = Math.abs(ob);
+      const passos=[];
+      while (y !== 0){ const resto = x % y; passos.push(`${x} = ${Math.floor(x/y)} × ${y} + ${resto}`); x = y; y = resto; }
+      return {
+        texto:`O MDC entre ${oa} e ${ob} é: ${x}`,
+        detalhe: passos.length ? passos.join("\n") : "Um dos valores é zero: o MDC é o outro valor."
+      };
+    }
+  },
+  {
+    id:"quicksort", nome:"Ordenação (quicksort)",
+    spec:"quicksort iterativo com pilha · pivô central",
+    campos:[{name:"lista",label:"Números do array",type:"text",value:"34, 7, 23, 32, 5, 62",hint:"Separados por vírgula"}],
+    run({lista}){
+      const arr = parseLista(lista);
+      if (!arr.length) return {bad:true, texto:"Nenhum dado foi inserido."};
+      const ordenado=[...arr]; const pilha=[]; let trocas=0;
+      if (ordenado.length>1) pilha.push([0,ordenado.length-1]);
+      while (pilha.length){
+        const [inicio,fim]=pilha.pop();
+        const pivo=ordenado[Math.floor((inicio+fim)/2)];
+        let esq=inicio, dir=fim;
+        while (esq<=dir){
+          while (ordenado[esq]<pivo) esq++;
+          while (ordenado[dir]>pivo) dir--;
+          if (esq<=dir){ const t=ordenado[esq]; ordenado[esq]=ordenado[dir]; ordenado[dir]=t; esq++; dir--; trocas++; }
+        }
+        if (inicio<dir) pilha.push([inicio,dir]);
+        if (esq<fim) pilha.push([esq,fim]);
+      }
+      return {
+        texto:`Array ordenado: ${fmt(ordenado)}`,
+        detalhe:`Array original: ${fmt(arr)}\n${arr.length} elemento(s) · ${trocas} troca(s)`
+      };
+    }
+  },
+  {
+    id:"contagem", nome:"Contagem no intervalo",
+    spec:"conta valores inteiros entre o 1º elemento do conjunto e N",
+    campos:[
+      {name:"lista",label:"Conjunto de dados",type:"text",value:"2, 5, 7.5, 3, 10, 1, 4",hint:"Separados por vírgula"},
+      {name:"n",label:"Valor limite N",type:"number",value:"7"}
+    ],
+    run({lista,n}){
+      const dados = parseLista(lista);
+      const N = parseFloat(n);
+      if (!dados.length) return {bad:true, texto:"Nenhum dado foi inserido."};
+      if (Number.isNaN(N)) return {bad:true, texto:"Valor N inválido."};
+      const primeiro = dados[0];
+      const inicio = Math.min(primeiro,N), fim = Math.max(primeiro,N);
+      const dentro = dados.filter(v => Number.isInteger(v) && v >= inicio && v <= fim);
+      return {
+        texto:`${dentro.length} valor(es) inteiro(s) no intervalo.`,
+        detalhe:`Conjunto: ${fmt(dados)}\nIntervalo considerado: [${inicio}, ${fim}] (1º elemento = ${primeiro}, N = ${N})\nContados: ${fmt(dentro)}`
+      };
+    }
+  }
+];
+
+const menu=document.getElementById("menu"), form=document.getElementById("form"),
+      out=document.getElementById("out"), title=document.getElementById("title"), spec=document.getElementById("spec");
+let atualId = ALGORITMOS[0].id;
+
+ALGORITMOS.forEach(alg=>{
+  const li=document.createElement("li");
+  const b=document.createElement("button");
+  b.type="button"; b.textContent=alg.nome; b.dataset.id=alg.id;
+  b.onclick=()=>selecionar(alg.id);
+  li.appendChild(b); menu.appendChild(li);
+});
+
+function selecionar(id){
+  atualId=id;
+  const alg=ALGORITMOS.find(a=>a.id===id);
+  menu.querySelectorAll("button").forEach(b=>b.setAttribute("aria-current", String(b.dataset.id===id)));
+  title.textContent=alg.nome;
+  spec.textContent=alg.spec;
+  form.innerHTML="";
+  alg.campos.forEach(c=>{
+    const d=document.createElement("div");
+    const l=document.createElement("label");
+    l.setAttribute("for","f-"+c.name);
+    l.innerHTML=c.label + (c.hint ? ` <span class="hint">— ${c.hint}</span>` : "");
+    const i=document.createElement("input");
+    i.type=c.type; i.id="f-"+c.name; i.name=c.name; i.value=c.value||"";
+    if(c.type==="number") i.step="any";
+    d.append(l,i); form.appendChild(d);
+  });
+  const btn=document.createElement("button");
+  btn.type="submit"; btn.className="run"; btn.textContent="Executar";
+  form.appendChild(btn);
+  out.innerHTML='<p class="empty">Preencha os campos e execute para ver o resultado.</p>';
+}
+
+form.addEventListener("submit",e=>{
+  e.preventDefault();
+  const alg=ALGORITMOS.find(a=>a.id===atualId);
+  const valores={};
+  alg.campos.forEach(c=>valores[c.name]=form.elements[c.name].value);
+  let r;
+  try { r = alg.run(valores); }
+  catch(err){ r = {bad:true, texto:"Não foi possível executar com esses valores."}; }
+  out.innerHTML="";
+  const box=document.createElement("div");
+  box.className="answer"+(r.bad?" bad":"");
+  box.textContent=r.texto;
+  out.appendChild(box);
+  if(r.sequencia){
+    const s=document.createElement("div"); s.className="seq";
+    r.sequencia.forEach(v=>{ const t=document.createElement("span"); t.textContent=v; s.appendChild(t); });
+    out.appendChild(s);
+  }
+  if(r.detalhe){
+    const d=document.createElement("div"); d.className="detail"; d.textContent=r.detalhe;
+    out.appendChild(d);
+  }
+});
+
+const themeBtn=document.getElementById("theme");
+function escuroAtivo(){
+  const t=document.documentElement.getAttribute("data-theme");
+  if(t) return t==="dark";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+function atualizaLabel(){ themeBtn.textContent = escuroAtivo() ? "Tema claro" : "Tema escuro"; }
+themeBtn.onclick=()=>{
+  document.documentElement.setAttribute("data-theme", escuroAtivo() ? "light" : "dark");
+  atualizaLabel();
+};
+atualizaLabel();
+selecionar(atualId);
+</script>
+</body>
+</html>

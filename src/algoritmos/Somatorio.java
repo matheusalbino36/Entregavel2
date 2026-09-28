@@ -21,4 +21,11 @@ public class Somatorio {
 		System.out.printf("O Somatório dos números é: " + soma);
 	}
 
+    public static double calcularSoma(double[] numeros) {
+        double soma = 0;
+        for (double num : numeros) {
+            soma += num;
+        }
+        return soma;
+    }
 }

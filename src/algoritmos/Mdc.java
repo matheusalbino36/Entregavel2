@@ -24,4 +24,14 @@ public class Mdc {
 		System.out.println("O MDC de " + num1 + " e " + num2 + " é: " + a);
 	}
 
+    public static int calcularMdc(int a, int b) {
+        int x = Math.abs(a);
+        int y = Math.abs(b);
+        while (y != 0) {
+            int resto = x % y;
+            x = y;
+            y = resto;
+        }
+        return x;
+    }
 }

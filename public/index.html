@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entregável 1 - Algoritmos Java & JavaScript</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation Header -->
+        <header class="navbar">
+            <div class="brand">
+                <div class="logo-icon">⚡</div>
+                <div>
+                    <h1>Algoritmos Core <span class="tag">Entregável 1</span></h1>
+                    <p class="subtitle">Execução, Análise & Visualização em Java e JavaScript</p>
+                </div>
+            </div>
+
+            <div class="navbar-actions">
+                <div class="engine-selector">
+                    <span class="selector-label">Motor de Execução:</span>
+                    <button class="engine-btn active" data-engine="benchmark">
+                        <span class="icon">⚔️</span> Benchmark (Dual)
+                    </button>
+                    <button class="engine-btn" data-engine="javascript">
+                        <span class="icon">⚡</span> JavaScript
+                    </button>
+                    <button class="engine-btn" data-engine="java">
+                        <span class="icon">☕</span> Java
+                    </button>
+                </div>
+                <div class="status-badge" id="server-status">
+                    <span class="status-dot"></span> <span id="status-text">Conectando...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-layout">
+            <!-- Left Side Panel: Sidebar Navigation & Input Controls -->
+            <aside class="control-panel">
+                <!-- Algorithm Tabs Nav -->
+                <nav class="algo-nav">
+                    <h2 class="section-title">Algoritmos Disponíveis</h2>
+                    <div class="algo-buttons">
+                        <button class="algo-tab active" data-algo="primo">
+                            <span class="tab-icon">🔢</span>
+                            <div class="tab-info">
+                                <span class="tab-name">1. Número Primo</span>
+                                <span class="tab-desc">Verifica se N é primo</span>
+                            </div>
+                        </button>
+                        <button class="algo-tab" data-algo="somatorio">
+                            <span class="tab-icon">➕</span>
+                            <div class="tab-info">
+                                <span class="tab-name">2. Somatório</span>
+                                <span class="tab-desc">Soma de um conjunto</span>
+                            </div>
+                        </button>
+                        <button class="algo-tab" data-algo="fibonacci">
+                            <span class="tab-icon">🌀</span>
+                            <div class="tab-info">
+                                <span class="tab-name">3. Fibonacci</span>
+                                <span class="tab-desc">N primeiros termos</span>
+                            </div>
+                        </button>
+                        <button class="algo-tab" data-algo="mdc">
+                            <span class="tab-icon">📐</span>
+                            <div class="tab-info">
+                                <span class="tab-name">4. MDC (Euclides)</span>
+                                <span class="tab-desc">Máximo divisor comum</span>
+                            </div>
+                        </button>
+                        <button class="algo-tab" data-algo="quicksort">
+                            <span class="tab-icon">🔀</span>
+                            <div class="tab-info">
+                                <span class="tab-name">5. Ordenação</span>
+                                <span class="tab-desc">Algoritmo Quicksort</span>
+                            </div>
+                        </button>
+                        <button class="algo-tab" data-algo="contagem">
+                            <span class="tab-icon">📊</span>
+                            <div class="tab-info">
+                                <span class="tab-name">6. Contagem</span>
+                                <span class="tab-desc">Inteiros no intervalo [1º, N]</span>
+                            </div>
+                        </button>
+                    </div>
+                </nav>
+
+                <!-- Dynamic Form Inputs -->
+                <section class="form-section card">
+                    <div class="form-header">
+                        <h3 id="form-title">Configurar Parâmetros</h3>
+                        <div class="presets-wrapper">
+                            <span class="presets-label">Exemplos:</span>
+                            <div id="presets-container"></div>
+                        </div>
+                    </div>
+
+                    <form id="algo-form" onsubmit="return false;">
+                        <div id="dynamic-inputs">
+                            <!-- Inputs rendered dynamically via JS -->
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" id="run-btn" class="btn-primary">
+                                <span class="btn-icon">▶</span> Executar Algoritmo
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </aside>
+
+            <!-- Right Side Panel: Output, Visualizer & Benchmark -->
+            <section class="results-panel">
+                <!-- Result Banner -->
+                <div class="card result-card" id="result-card">
+                    <div class="result-header">
+                        <span class="result-badge" id="result-badge">Pronto</span>
+                        <div class="execution-times" id="exec-times">
+                            <!-- Latency display -->
+                        </div>
+                    </div>
+                    <div class="result-body" id="result-main-output">
+                        <div class="placeholder-text">Selecione um algoritmo e clique em <strong>Executar</strong> para ver os resultados.</div>
+                    </div>
+                </div>
+
+                <!-- Benchmark Comparison Card -->
+                <div class="card benchmark-card hidden" id="benchmark-card">
+                    <h3>⚔️ Comparativo de Performance (Java vs JavaScript)</h3>
+                    <div class="benchmark-grid">
+                        <div class="bench-box java-box">
+                            <div class="bench-header">
+                                <span class="icon">☕</span> Java Backend
+                            </div>
+                            <div class="bench-time" id="java-bench-time">0.00 ms</div>
+                            <div class="bench-status" id="java-bench-status">OK</div>
+                        </div>
+                        <div class="bench-vs">VS</div>
+                        <div class="bench-box js-box">
+                            <div class="bench-header">
+                                <span class="icon">⚡</span> JavaScript
+                            </div>
+                            <div class="bench-time" id="js-bench-time">0.00 ms</div>
+                            <div class="bench-status" id="js-bench-status">OK</div>
+                        </div>
+                    </div>
+                    <div class="benchmark-summary" id="benchmark-summary">
+                        <!-- Comparative text & speedup -->
+                    </div>
+                </div>
+
+                <!-- Step Visualizer Section -->
+                <div class="card visualizer-card">
+                    <div class="vis-header">
+                        <h3>🎨 Visualização Interativa do Algoritmo</h3>
+                        <div class="vis-controls" id="vis-controls">
+                            <!-- Dynamic controls for visualizer -->
+                        </div>
+                    </div>
+                    <div class="vis-canvas" id="vis-canvas">
+                        <div class="placeholder-text">A visualização do passo a passo aparecerá aqui após a execução.</div>
+                    </div>
+                </div>
+
+                <!-- Tabs for Code View & Terminal Logs -->
+                <div class="card inspector-card">
+                    <div class="inspector-tabs">
+                        <button class="inspector-tab active" data-tab="code">
+                            💻 Código Fonte (<span id="code-lang-label">Java & JS</span>)
+                        </button>
+                        <button class="inspector-tab" data-tab="terminal">
+                            📟 Console de Execução (Logs)
+                        </button>
+                    </div>
+
+                    <!-- Tab 1: Code View -->
+                    <div class="inspector-content active" id="tab-code">
+                        <div class="code-dual-view">
+                            <div class="code-column">
+                                <div class="code-header">
+                                    <span>☕ Java (<span id="java-filename">Primo.java</span>)</span>
+                                    <button class="copy-btn" onclick="app.copyCode('java')">Copiar</button>
+                                </div>
+                                <pre><code id="java-code-display">// Carregando...</code></pre>
+                            </div>
+                            <div class="code-column">
+                                <div class="code-header">
+                                    <span>⚡ JavaScript (<span id="js-filename">1_numero_primo.js</span>)</span>
+                                    <button class="copy-btn" onclick="app.copyCode('js')">Copiar</button>
+                                </div>
+                                <pre><code id="js-code-display">// Carregando...</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Terminal Logs -->
+                    <div class="inspector-content" id="tab-terminal">
+                        <div class="terminal-toolbar">
+                            <span>Status Terminal: Ativo</span>
+                            <button class="btn-sm" onclick="app.clearTerminal()">Limpar Log</button>
+                        </div>
+                        <div class="terminal-body" id="terminal-body">
+                            <div class="log-line info">[SISTEMA] Terminal de monitoramento inicializado.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

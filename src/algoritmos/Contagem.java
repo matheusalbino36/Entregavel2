@@ -47,4 +47,29 @@ public class Contagem {
         System.out.print("Quantidade de inteiros no intervalo: ");
         System.out.println(contador);
     }
+
+    public static int contarInteiros(double[] conjunto, double n) {
+        if (conjunto == null || conjunto.length == 0) return 0;
+        double primeiroDado = conjunto[0];
+        double limiteInferior = primeiroDado;
+        double limiteSuperior = n;
+
+        if (primeiroDado > n) {
+            limiteInferior = n;
+            limiteSuperior = primeiroDado;
+        }
+
+        int contador = 0;
+
+        for (double valor : conjunto) {
+            boolean ehInteiro = (valor % 1 == 0);
+            boolean estaNoIntervalo = (valor >= limiteInferior && valor <= limiteSuperior);
+
+            if (ehInteiro && estaNoIntervalo) {
+                contador++;
+            }
+        }
+
+        return contador;
+    }
 }

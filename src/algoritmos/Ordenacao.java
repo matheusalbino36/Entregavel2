@@ -49,4 +49,13 @@ public class Ordenacao {
         }
         System.out.println();
     }
+
+    public static int[] ordenarVetor(int[] input) {
+        if (input == null) return new int[0];
+        int[] copia = input.clone();
+        if (copia.length > 1) {
+            quicksort(copia, 0, copia.length - 1);
+        }
+        return copia;
+    }
 }
